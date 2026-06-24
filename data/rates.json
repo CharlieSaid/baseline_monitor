@@ -1,9 +1,15 @@
 {
-  "updated": "2026-06-23",
+  "updated": "2026-06-24",
   "rates": [
-    { "name": "T-Bill (4-week)", "rate": 5.28, "url": "https://www.treasurydirect.gov/auctions/upcoming/" },
-    { "name": "VMFXX", "rate": 5.26, "url": "https://investor.vanguard.com/investment-products/money-markets/profile#overview" },
-    { "name": "SoFi HYSA", "rate": 4.60, "url": "https://www.sofi.com/banking/savings-account/" },
-    { "name": "Marcus HYSA", "rate": 4.40, "url": "https://www.marcus.com/us/en/savings/high-yield-savings" }
+    {
+      "name": "Marcus HYSA",
+      "rate": 3.4,
+      "url": "https://www.marcus.com/us/en/savings/high-yield-savings"
+    },
+    {
+      "name": "SoFi HYSA",
+      "rate": 3.1,
+      "url": "https://www.sofi.com/banking/savings-account/"
+    }
   ]
 }
