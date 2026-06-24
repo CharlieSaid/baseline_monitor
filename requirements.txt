@@ -1,0 +1,3 @@
+# Runtime dependencies for fetch_rates.py
+# Pin or adjust versions as needed; leaving unpinned will install the latest compatible release.
+yfinance
