@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """
-fetch_rates.py — scrapes current savings rates and writes data/rates.json.
+fetch_rates.py — fetches current savings rates and writes data/rates.json.
 
 Sources:
-  - T-Bill (4-week): TreasuryDirect auction results API
-  - VMFXX:           Vanguard internal fund data API
+  - T-Bill (4-week): Federal Reserve H.15 Data Download Program (official CSV)
+  - VMFXX:           Yahoo Finance fund summary (widely-used, stable endpoint)
   - HYSAs:           Each bank's public rate page
 
 Run daily via GitHub Actions. Writes a ~200-byte JSON file.
 """
 
+import csv
+import io
 import json
 import re
 import sys
@@ -30,7 +32,7 @@ def fetch(url: str, timeout: int = 10) -> str:
 
 
 def find_first_percent(html: str, pattern: str) -> float | None:
-    """Return the first float that follows `pattern` in `html`, or None."""
+    """Return the first float matching `pattern` in `html`, or None."""
     m = re.search(pattern, html, re.IGNORECASE | re.DOTALL)
     if m:
         try:
@@ -45,34 +47,60 @@ def find_first_percent(html: str, pattern: str) -> float | None:
 # ---------------------------------------------------------------------------
 
 def fetch_tbill_4week() -> float:
-    """4-week T-Bill high rate from the TreasuryDirect auction results API."""
-    url = "https://www.treasurydirect.gov/TA_WS/securities/search?type=Bill&term=4-Week&pagesize=1&format=json"
+    """
+    4-week T-Bill secondary-market rate from the Fed's H.15 Data Download
+    Program — the official 'direct download for automated systems' URL.
+    Returns the most recent non-ND daily observation.
+    """
+    # Series bf17364827e38702b42a58cf8eaa3f78 = TB/4WEEKS (4-week T-Bill)
+    url = (
+        "https://www.federalreserve.gov/datadownload/Output.aspx"
+        "?rel=H15&series=bf17364827e38702b42a58cf8eaa3f78"
+        "&lastobs=10&filetype=csv&label=include&layout=seriescolumn"
+    )
     raw = fetch(url)
-    data = json.loads(raw)
-    if not data:
-        raise ValueError("Empty response from TreasuryDirect API")
-    # highDiscountRate is the annualized discount rate from the most recent auction
-    rate = data[0].get("highDiscountRate") or data[0].get("highInvestmentRate")
-    if rate is None:
-        raise ValueError(f"Rate field missing from response: {data[0].keys()}")
-    return round(float(rate), 2)
+
+    # The CSV has metadata rows before the header; skip lines until we find
+    # a line starting with "Series Description" or the date header.
+    lines = raw.splitlines()
+    data_start = 0
+    for i, line in enumerate(lines):
+        if line.startswith("\"Series Description\"") or line.startswith("Series Description"):
+            data_start = i
+            break
+
+    reader = csv.reader(io.StringIO("\n".join(lines[data_start:])))
+    rows = list(reader)
+
+    # rows[0] = header labels, rows[1] = series IDs, rows[2] = units, etc.
+    # Find the row index where date/value data begins (rows whose first cell
+    # looks like a date: YYYY-MM-DD).
+    date_pattern = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+    for row in reversed(rows):
+        if row and date_pattern.match(row[0].strip()):
+            value = row[1].strip() if len(row) > 1 else ""
+            if value and value.upper() != "ND":
+                return round(float(value), 2)
+
+    raise ValueError("4-week T-Bill rate not found in H.15 CSV")
 
 
 def fetch_vmfxx() -> float:
-    """VMFXX 7-day SEC yield from Vanguard's internal fund data API."""
-    url = "https://investor.vanguard.com/investment-products/money-markets/profile/api/VMFXX/overview"
+    """
+    VMFXX 7-day SEC yield from Yahoo Finance's fund summary endpoint.
+    This endpoint is widely used, stable, and free.
+    """
+    url = "https://query1.finance.yahoo.com/v8/finance/chart/VMFXX"
     raw = fetch(url)
     data = json.loads(raw)
-    # Path: fundProfile > fundManagement > [yields] > sevenDaySecYield
-    yields = (
-        data.get("fundProfile", {})
-            .get("fundManagement", {})
-            .get("yields", {})
-    )
-    rate = yields.get("sevenDaySecYield")
-    if rate is None:
-        raise ValueError(f"sevenDaySecYield not found in response")
-    return round(float(rate), 2)
+
+    # The yield lives in meta.yield (as a decimal, e.g. 0.0526 = 5.26%)
+    meta = data.get("chart", {}).get("result", [{}])[0].get("meta", {})
+    yld = meta.get("yield")
+    if yld is not None:
+        return round(float(yld) * 100, 2)
+
+    raise ValueError(f"yield not found in Yahoo Finance response for VMFXX")
 
 
 def fetch_sofi_hysa() -> float:
