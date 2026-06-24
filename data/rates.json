@@ -2,6 +2,11 @@
   "updated": "2026-06-24",
   "rates": [
     {
+      "name": "T-Bill (4-week)",
+      "rate": 3.66,
+      "url": "https://www.treasurydirect.gov/auctions/upcoming/"
+    },
+    {
       "name": "Marcus HYSA",
       "rate": 3.4,
       "url": "https://www.marcus.com/us/en/savings/high-yield-savings"
