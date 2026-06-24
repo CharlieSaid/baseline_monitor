@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rate Leaderboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="board" id="board">
+    <p class="status">Loading rates…</p>
+  </main>
+
+  <script>
+    const RATES_URL = "data/rates.json";
+
+    async function loadRates() {
+      const board = document.getElementById("board");
+
+      let data;
+      try {
+        const res = await fetch(RATES_URL);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        data = await res.json();
+      } catch (err) {
+        board.innerHTML = `<p class="status">Could not load rates. Try refreshing.<br><small>${err.message}</small></p>`;
+        return;
+      }
+
+      const { updated, rates } = data;
+      const maxRate = rates[0]?.rate ?? 1;   // top rate = 100% bar width
+
+      // ── Build DOM ─────────────────────────────────────────
+      board.innerHTML = `
+        <header class="header">
+          <h1>Savings <span>Rate</span> Leaderboard</h1>
+          <span class="updated">as of ${updated}</span>
+        </header>
+
+        ${rates.map((item, i) => `
+          <div class="row" data-rank="${i + 1}">
+            <span class="rank">${i + 1}</span>
+            <div class="bar-track">
+              <div class="bar-fill" data-target="${(item.rate / maxRate * 100).toFixed(2)}">
+                <a class="bar-label" href="${item.url}" target="_blank" rel="noopener">
+                  ${item.name}
+                </a>
+              </div>
+            </div>
+            <span class="rate-num">${item.rate.toFixed(2)}%</span>
+          </div>
+        `).join("")}
+
+        <footer class="footer">
+          Rates update each morning. T-Bill yield from the
+          <a href="https://www.federalreserve.gov/releases/h15/" target="_blank" rel="noopener">Fed H.15</a>.
+          HYSA/fund rates scraped from each provider's public page.
+          Not financial advice.
+        </footer>
+      `;
+
+      // ── Animate bars in on next frame ─────────────────────
+      requestAnimationFrame(() => {
+        document.querySelectorAll(".bar-fill").forEach(el => {
+          el.style.width = el.dataset.target + "%";
+        });
+      });
+    }
+
+    loadRates();
+  </script>
+</body>
+</html>
