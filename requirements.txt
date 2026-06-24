@@ -1,3 +1,4 @@
 # Runtime dependencies for fetch_rates.py
-# Pin or adjust versions as needed; leaving unpinned will install the latest compatible release.
-yfinance
+# (Uses only stdlib: urllib, re, csv, json)
+# Intentionally empty; no external packages required.
+

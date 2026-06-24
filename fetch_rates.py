@@ -18,7 +18,6 @@ import sys
 from datetime import date
 from pathlib import Path
 import urllib.request
-import yfinance as yf
 
 OUTPUT = Path(__file__).parent / "data" / "rates.json"
 
@@ -86,25 +85,28 @@ def fetch_tbill_4week() -> float:
     raise ValueError("4-week T-Bill rate not found in H.15 CSV")
 
 def fetch_vmfxx() -> float:
-    """Fetch VMFXX 7-day yield using yfinance."""
-    ticker = yf.Ticker("VMFXX")
-    info = ticker.info
+    """
+    Fetch VMFXX net yield from Vanguard.
+    Scrapes the 7-day SEC yield and subtracts the expense ratio.
+    """
+    url = "https://investor.vanguard.com/investment-products/mutual-funds/profile/vmfxx"
+    html = fetch(url)
     
-    # Yahoo often puts it under one of these keys for money market funds
-    yield_pct = (
-        info.get("sevenDayYield") or           # sometimes present
-        info.get("yield") or
-        info.get("trailingAnnualDividendYield") or
-        info.get("dividendYield")
-    )
+    # Extract 7-day SEC yield (e.g., "3.57%")
+    yield_match = re.search(r"7\s+day\s+SEC\s+yield.*?(\d+\.?\d*)\s*%", html, re.IGNORECASE | re.DOTALL)
+    if not yield_match:
+        raise ValueError("7-day SEC yield not found on Vanguard VMFXX page")
+    yield_pct = float(yield_match.group(1))
     
-    if yield_pct is not None:
-        # Convert to percentage if it's a decimal
-        if yield_pct < 1:  
-            yield_pct *= 100
-        return round(float(yield_pct), 2)
+    # Extract expense ratio (e.g., "0.11%")
+    expense_match = re.search(r"Expense\s+ratio.*?(\d+\.?\d*)\s*%", html, re.IGNORECASE | re.DOTALL)
+    if not expense_match:
+        raise ValueError("Expense ratio not found on Vanguard VMFXX page")
+    expense_pct = float(expense_match.group(1))
     
-    raise ValueError("7-day yield not found in yfinance response for VMFXX")
+    # Net yield = gross yield - expense ratio
+    net_yield = yield_pct - expense_pct
+    return round(max(net_yield, 0.0), 2)  # ensure non-negative
 
 
 def fetch_sofi_hysa() -> float:
