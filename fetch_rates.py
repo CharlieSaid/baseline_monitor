@@ -18,6 +18,7 @@ import sys
 from datetime import date
 from pathlib import Path
 import urllib.request
+import yfinance as yf
 
 OUTPUT = Path(__file__).parent / "data" / "rates.json"
 
@@ -84,23 +85,26 @@ def fetch_tbill_4week() -> float:
 
     raise ValueError("4-week T-Bill rate not found in H.15 CSV")
 
-
 def fetch_vmfxx() -> float:
-    """
-    VMFXX 7-day SEC yield from Yahoo Finance's fund summary endpoint.
-    This endpoint is widely used, stable, and free.
-    """
-    url = "https://query1.finance.yahoo.com/v8/finance/chart/VMFXX"
-    raw = fetch(url)
-    data = json.loads(raw)
-
-    # The yield lives in meta.yield (as a decimal, e.g. 0.0526 = 5.26%)
-    meta = data.get("chart", {}).get("result", [{}])[0].get("meta", {})
-    yld = meta.get("yield")
-    if yld is not None:
-        return round(float(yld) * 100, 2)
-
-    raise ValueError(f"yield not found in Yahoo Finance response for VMFXX")
+    """Fetch VMFXX 7-day yield using yfinance."""
+    ticker = yf.Ticker("VMFXX")
+    info = ticker.info
+    
+    # Yahoo often puts it under one of these keys for money market funds
+    yield_pct = (
+        info.get("sevenDayYield") or           # sometimes present
+        info.get("yield") or
+        info.get("trailingAnnualDividendYield") or
+        info.get("dividendYield")
+    )
+    
+    if yield_pct is not None:
+        # Convert to percentage if it's a decimal
+        if yield_pct < 1:  
+            yield_pct *= 100
+        return round(float(yield_pct), 2)
+    
+    raise ValueError("7-day yield not found in yfinance response for VMFXX")
 
 
 def fetch_sofi_hysa() -> float:
