@@ -7,6 +7,11 @@
       "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
+      "name": "VMFXX",
+      "rate": 3.64,
+      "url": "https://investor.vanguard.com/investment-products/money-markets/profile/vmfxx#overview"
+    },
+    {
       "name": "Marcus HYSA",
       "rate": 3.4,
       "url": "https://www.marcus.com/us/en/savings/high-yield-savings"
