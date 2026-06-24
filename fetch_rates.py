@@ -3,8 +3,8 @@
 fetch_rates.py — scrapes current savings rates and writes data/rates.json.
 
 Sources:
-  - T-Bill (4-week): Treasury FRB H.15 data release (JSON)
-  - VMFXX:           Vanguard fund detail page
+  - T-Bill (4-week): TreasuryDirect auction results API
+  - VMFXX:           Vanguard internal fund data API
   - HYSAs:           Each bank's public rate page
 
 Run daily via GitHub Actions. Writes a ~200-byte JSON file.
@@ -13,10 +13,9 @@ Run daily via GitHub Actions. Writes a ~200-byte JSON file.
 import json
 import re
 import sys
-from datetime import date, timezone, datetime
+from datetime import date
 from pathlib import Path
 import urllib.request
-import urllib.error
 
 OUTPUT = Path(__file__).parent / "data" / "rates.json"
 
@@ -46,39 +45,34 @@ def find_first_percent(html: str, pattern: str) -> float | None:
 # ---------------------------------------------------------------------------
 
 def fetch_tbill_4week() -> float:
-    """4-week T-Bill secondary-market yield from the Fed H.15 JSON release."""
-    url = "https://www.federalreserve.gov/releases/h15/current/h15.json"
+    """4-week T-Bill high rate from the TreasuryDirect auction results API."""
+    url = "https://www.treasurydirect.gov/TA_WS/securities/search?type=Bill&term=4-Week&pagesize=1&format=json"
     raw = fetch(url)
     data = json.loads(raw)
-
-    # Navigate: data["H15"] > series where name contains "4-WEEK" and "TREASURY BILLS"
-    for series in data.get("H15", {}).get("series", []):
-        desc = series.get("description", "").upper()
-        if "4-WEEK" in desc and "TREASURY" in desc and "COUPON" not in desc:
-            # Observations are [{date, value}, ...]; grab the last non-ND value
-            for obs in reversed(series.get("observations", [])):
-                v = obs.get("value", "ND")
-                if v != "ND":
-                    return round(float(v), 2)
-
-    raise ValueError("4-week T-Bill rate not found in H15 feed")
+    if not data:
+        raise ValueError("Empty response from TreasuryDirect API")
+    # highDiscountRate is the annualized discount rate from the most recent auction
+    rate = data[0].get("highDiscountRate") or data[0].get("highInvestmentRate")
+    if rate is None:
+        raise ValueError(f"Rate field missing from response: {data[0].keys()}")
+    return round(float(rate), 2)
 
 
 def fetch_vmfxx() -> float:
-    """VMFXX 7-day SEC yield from Vanguard's public fund detail page."""
-    url = "https://investor.vanguard.com/investment-products/money-markets/profile/vmfxx#overview"
-    html = fetch(url)
-    # Vanguard renders "X.XX%" for the 7-day SEC yield
-    rate = find_first_percent(html, r"7-day\s+SEC\s+yield[^%]{0,80}?([\d]+\.[\d]+)\s*%")
-    if rate is not None:
-        return rate
-
-    # Fallback: look for any "X.XX%" near "SEC yield" text
-    rate = find_first_percent(html, r"SEC\s+yield[^%]{0,120}?([\d]+\.[\d]+)")
-    if rate is not None:
-        return rate
-
-    raise ValueError("VMFXX rate not found on Vanguard page")
+    """VMFXX 7-day SEC yield from Vanguard's internal fund data API."""
+    url = "https://investor.vanguard.com/investment-products/money-markets/profile/api/VMFXX/overview"
+    raw = fetch(url)
+    data = json.loads(raw)
+    # Path: fundProfile > fundManagement > [yields] > sevenDaySecYield
+    yields = (
+        data.get("fundProfile", {})
+            .get("fundManagement", {})
+            .get("yields", {})
+    )
+    rate = yields.get("sevenDaySecYield")
+    if rate is None:
+        raise ValueError(f"sevenDaySecYield not found in response")
+    return round(float(rate), 2)
 
 
 def fetch_sofi_hysa() -> float:
@@ -135,6 +129,9 @@ def main() -> None:
     today = date.today().isoformat()
     results = []
     errors = []
+
+    # Ensure output directory exists
+    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 
     for source in RATE_SOURCES:
         try:
