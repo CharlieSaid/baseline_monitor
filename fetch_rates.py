@@ -2,185 +2,65 @@
 """
 fetch_rates.py — fetches current savings rates and writes data/rates.json.
 
-Sources:
-  - T-Bill (4-week): Federal Reserve H.15 Data Download Program (official CSV)
-  - VMFXX:           Yahoo Finance fund summary (widely-used, stable endpoint)
-  - HYSAs:           Each bank's public rate page
+Sources live in scrapers/ (one module per provider).
 
 Run daily via GitHub Actions. Writes a ~200-byte JSON file.
+Exits with status 1 if any source fails or returns no data (so CI can alert).
 """
 
-import csv
-import io
 import json
-import re
 import sys
 from datetime import date
 from pathlib import Path
-import urllib.request
+
+from scrapers import SOURCES
 
 OUTPUT = Path(__file__).parent / "data" / "rates.json"
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-def fetch(url: str, timeout: int = 10) -> str:
-    req = urllib.request.Request(url, headers={"User-Agent": "rate-leaderboard/1.0"})
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read().decode("utf-8", errors="replace")
-
-
-def find_first_percent(html: str, pattern: str) -> float | None:
-    """Return the first float matching `pattern` in `html`, or None."""
-    m = re.search(pattern, html, re.IGNORECASE | re.DOTALL)
-    if m:
-        try:
-            return round(float(m.group(1)), 2)
-        except ValueError:
-            return None
-    return None
-
-
-# ---------------------------------------------------------------------------
-# Individual fetchers — each returns a float (APY/rate %) or raises
-# ---------------------------------------------------------------------------
-
-def fetch_tbill_4week() -> float:
-    """
-    4-week T-Bill secondary-market rate from the Fed's H.15 Data Download
-    Program — the official 'direct download for automated systems' URL.
-    Returns the most recent non-ND daily observation.
-    """
-    # Series bf17364827e38702b42a58cf8eaa3f78 = TB/4WEEKS (4-week T-Bill)
-    url = (
-        "https://www.federalreserve.gov/datadownload/Output.aspx"
-        "?rel=H15&series=bf17364827e38702b42a58cf8eaa3f78"
-        "&lastobs=10&filetype=csv&label=include&layout=seriescolumn"
-    )
-    raw = fetch(url)
-
-    # The CSV has metadata rows before the header; skip lines until we find
-    # a line starting with "Series Description" or the date header.
-    lines = raw.splitlines()
-    data_start = 0
-    for i, line in enumerate(lines):
-        if line.startswith("\"Series Description\"") or line.startswith("Series Description"):
-            data_start = i
-            break
-
-    reader = csv.reader(io.StringIO("\n".join(lines[data_start:])))
-    rows = list(reader)
-
-    # rows[0] = header labels, rows[1] = series IDs, rows[2] = units, etc.
-    # Find the row index where date/value data begins (rows whose first cell
-    # looks like a date: YYYY-MM-DD).
-    date_pattern = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-    for row in reversed(rows):
-        if row and date_pattern.match(row[0].strip()):
-            value = row[1].strip() if len(row) > 1 else ""
-            if value and value.upper() != "ND":
-                return round(float(value), 2)
-
-    raise ValueError("4-week T-Bill rate not found in H.15 CSV")
-
-def fetch_vmfxx() -> float:
-    """
-    Fetch VMFXX net yield from Vanguard.
-    Scrapes the 7-day SEC yield and subtracts the expense ratio.
-    """
-    url = "https://investor.vanguard.com/investment-products/mutual-funds/profile/vmfxx"
-    html = fetch(url)
-    
-    # Extract 7-day SEC yield (e.g., "3.57%")
-    yield_match = re.search(r"7\s+day\s+SEC\s+yield.*?(\d+\.?\d*)\s*%", html, re.IGNORECASE | re.DOTALL)
-    if not yield_match:
-        raise ValueError("7-day SEC yield not found on Vanguard VMFXX page")
-    yield_pct = float(yield_match.group(1))
-    
-    # Extract expense ratio (e.g., "0.11%")
-    expense_match = re.search(r"Expense\s+ratio.*?(\d+\.?\d*)\s*%", html, re.IGNORECASE | re.DOTALL)
-    if not expense_match:
-        raise ValueError("Expense ratio not found on Vanguard VMFXX page")
-    expense_pct = float(expense_match.group(1))
-    
-    # Net yield = gross yield - expense ratio
-    net_yield = yield_pct - expense_pct
-    return round(max(net_yield, 0.0), 2)  # ensure non-negative
-
-
-def fetch_sofi_hysa() -> float:
-    url = "https://www.sofi.com/banking/savings-account/"
-    html = fetch(url)
-    rate = find_first_percent(html, r"([\d]+\.[\d]+)\s*%\s*APY")
-    if rate is not None:
-        return rate
-    raise ValueError("SoFi HYSA rate not found")
-
-
-def fetch_marcus_hysa() -> float:
-    url = "https://www.marcus.com/us/en/savings/high-yield-savings"
-    html = fetch(url)
-    rate = find_first_percent(html, r"([\d]+\.[\d]+)\s*%\s*APY")
-    if rate is not None:
-        return rate
-    raise ValueError("Marcus HYSA rate not found")
-
-
-# ---------------------------------------------------------------------------
-# Rate definitions — add or remove entries here to change the leaderboard
-# ---------------------------------------------------------------------------
-
 RATE_SOURCES = [
-    {
-        "name": "T-Bill (4-week)",
-        "fetch": fetch_tbill_4week,
-        "url": "https://www.treasurydirect.gov/auctions/upcoming/",
-    },
-    {
-        "name": "VMFXX",
-        "fetch": fetch_vmfxx,
-        "url": "https://investor.vanguard.com/investment-products/money-markets/profile/vmfxx#overview",
-    },
-    {
-        "name": "SoFi HYSA",
-        "fetch": fetch_sofi_hysa,
-        "url": "https://www.sofi.com/banking/savings-account/",
-    },
-    {
-        "name": "Marcus HYSA",
-        "fetch": fetch_marcus_hysa,
-        "url": "https://www.marcus.com/us/en/savings/high-yield-savings",
-    },
+    {"name": source.NAME, "fetch": source.fetch_rate, "url": source.URL}
+    for source in SOURCES
 ]
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
+def require_rate(rate: float | None, source_name: str) -> float:
+    """Reject empty or invalid fetch results so failures are never silent."""
+    if rate is None:
+        raise ValueError(f"{source_name}: fetch returned no data")
+    if not isinstance(rate, (int, float)):
+        raise ValueError(f"{source_name}: fetch returned non-numeric data: {rate!r}")
+    if rate <= 0:
+        raise ValueError(f"{source_name}: fetch returned invalid rate ({rate}%)")
+    return round(float(rate), 2)
+
+
+def alert(message: str) -> None:
+    print(f"ALERT: {message}", file=sys.stderr)
+
 
 def main() -> None:
     today = date.today().isoformat()
     results = []
     errors = []
 
-    # Ensure output directory exists
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 
     for source in RATE_SOURCES:
+        name = source["name"]
         try:
-            rate = source["fetch"]()
-            results.append({"name": source["name"], "rate": rate, "url": source["url"]})
-            print(f"  ✓ {source['name']}: {rate}%")
+            rate = require_rate(source["fetch"](), name)
+            results.append({"name": name, "rate": rate, "url": source["url"]})
+            print(f"  ✓ {name}: {rate}%")
         except Exception as exc:
-            errors.append(f"{source['name']}: {exc}")
-            print(f"  ✗ {source['name']}: {exc}", file=sys.stderr)
+            message = f"{name}: {exc}"
+            errors.append(message)
+            alert(message)
+            print(f"  ✗ {name}: {exc}", file=sys.stderr)
 
     if not results:
-        print("All fetches failed — not overwriting existing data.", file=sys.stderr)
+        alert("All rate sources failed — not overwriting existing data.")
         sys.exit(1)
 
-    # Sort highest rate first (leaderboard order)
     results.sort(key=lambda r: r["rate"], reverse=True)
 
     payload = {"updated": today, "rates": results}
@@ -188,9 +68,11 @@ def main() -> None:
     print(f"\nWrote {OUTPUT} ({OUTPUT.stat().st_size} bytes)")
 
     if errors:
-        print(f"\nPartial failures ({len(errors)}):", file=sys.stderr)
-        for e in errors:
-            print(f"  {e}", file=sys.stderr)
+        alert(
+            f"{len(errors)}/{len(RATE_SOURCES)} rate sources failed; "
+            "rates.json may be incomplete."
+        )
+        sys.exit(1)
 
 
 if __name__ == "__main__":

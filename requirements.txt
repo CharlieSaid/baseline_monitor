@@ -1,4 +1,4 @@
-# Runtime dependencies for fetch_rates.py
+# Runtime dependencies for fetch_rates.py and scrapers/
 # (Uses only stdlib: urllib, re, csv, json)
 # Intentionally empty; no external packages required.
 

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-24",
+  "updated": "2026-06-25",
   "rates": [
     {
       "name": "T-Bill (4-week)",
@@ -8,8 +8,8 @@
     },
     {
       "name": "VMFXX",
-      "rate": 3.64,
-      "url": "https://investor.vanguard.com/investment-products/money-markets/profile/vmfxx#overview"
+      "rate": 3.46,
+      "url": "https://investor.vanguard.com/investment-products/mutual-funds/profile/vmfxx#overview"
     },
     {
       "name": "Marcus HYSA",
