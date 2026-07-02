@@ -1,9 +1,9 @@
 {
-  "updated": "2026-07-01",
+  "updated": "2026-07-02",
   "rates": [
     {
       "name": "T-Bill (4-week)",
-      "rate": 3.71,
+      "rate": 3.7,
       "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
