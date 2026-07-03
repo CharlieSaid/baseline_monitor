@@ -1,14 +1,14 @@
 {
-  "updated": "2026-07-02",
+  "updated": "2026-07-03",
   "rates": [
     {
       "name": "T-Bill (4-week)",
-      "rate": 3.7,
+      "rate": 3.67,
       "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
       "name": "VMFXX",
-      "rate": 3.47,
+      "rate": 3.48,
       "url": "https://investor.vanguard.com/investment-products/mutual-funds/profile/vmfxx#overview"
     },
     {
