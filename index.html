@@ -36,8 +36,11 @@
       // ── Build DOM ─────────────────────────────────────────
       board.innerHTML = `
         <header class="header">
-          <h1>Baseline <span>Monitor</span> Leaderboard</h1>
-          <span class="updated">as of ${updated}</span>
+          <div class="header-row">
+            <h1>Baseline Monitor Leaderboard</h1>
+            <span class="updated">as of ${updated}</span>
+          </div>
+          <p class="byline">by <a href="https://github.com/CharlieSaid" target="_blank" rel="noopener">Charlie Said</a></p>
         </header>
 
         ${rates.map((item, i) => `
