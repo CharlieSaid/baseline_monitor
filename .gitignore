@@ -1,3 +1,6 @@
+# Data storage
+data/
+
 # Python
 __pycache__/
 *.py[cod]
