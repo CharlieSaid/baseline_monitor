@@ -67,6 +67,11 @@
       "url": "https://investor.vanguard.com/investment-products/mutual-funds/profile/vmfxx#overview"
     },
     {
+      "name": "Marcus HYSA",
+      "rate": 3.4,
+      "url": "https://www.marcus.com/us/en/savings/high-yield-savings"
+    },
+    {
       "name": "Valley Direct HYSA",
       "rate": 3.4,
       "url": "https://www.valleydirect.com/Savings"
@@ -115,11 +120,6 @@
       "name": "Citizens Access HYSA",
       "rate": 3.0,
       "url": "https://www.secure.citizensaccess.com/Citizens/"
-    },
-    {
-      "name": "Marcus HYSA",
-      "rate": 1.0,
-      "url": "https://www.marcus.com/us/en/savings/high-yield-savings"
     }
   ]
 }
