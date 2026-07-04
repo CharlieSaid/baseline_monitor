@@ -10,9 +10,9 @@
   --green-bright: #4ade80;
   --green-bright-dim: rgba(74,222,128,.35);
   --green-medium: #22c55e;
-  --green-medium-dim: rgba(34,197,94,.22);
-  --green-dark: #166534;
-  --green-dark-dim: rgba(22,101,52,.28);
+  --green-medium-dim: rgba(34,197,94,.32);
+  --green-dark: #14532d;
+  --green-dark-dim: rgba(20,83,45,.55);
   --mono:       "DM Mono", monospace;
   --sans:       "Inter", system-ui, sans-serif;
   --radius:     6px;
@@ -41,15 +41,16 @@ body {
 
 /* ── Header ──────────────────────────────────────────────── */
 .header {
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   border-bottom: 1px solid var(--border);
-  padding-bottom: 1rem;
+  padding-bottom: .75rem;
 }
 
 .header-row {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+  gap: 1rem;
 }
 
 .header h1 {
@@ -62,7 +63,10 @@ body {
 }
 
 .byline {
-  margin-top: .35rem;
+  display: block;
+  width: 100%;
+  margin-top: .5rem;
+  padding-top: .35rem;
   font-size: .7rem;
   color: var(--muted);
   text-align: right;
@@ -90,7 +94,7 @@ body {
   grid-template-columns: 2rem 1fr auto;
   align-items: center;
   gap: 0 1rem;
-  margin-bottom: 0.65rem;
+  margin-bottom: 0.45rem;
 }
 
 .rank {
@@ -111,9 +115,9 @@ body {
 
 .bar-track {
   position: relative;
-  height: 32px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  height: 26px;
+  background: var(--green-dark-dim);
+  border: 1px solid rgba(34,197,94,.18);
   border-radius: var(--radius);
   overflow: hidden;
 }
@@ -126,24 +130,33 @@ body {
   transition: width .9s cubic-bezier(.16,1,.3,1);
   display: flex;
   align-items: center;
-  padding-left: .6rem;
+  padding-left: .55rem;
+  background: rgba(255,255,255,.06);
 }
 
-.row .bar-fill {
-  background: var(--green-dark-dim);
+.row[data-rank="1"] .bar-track {
+  background: linear-gradient(90deg, var(--gold-dim), rgba(245,166,35,.4));
+  border-color: rgba(245,166,35,.35);
 }
 .row[data-rank="1"] .bar-fill {
-  background: linear-gradient(90deg, var(--gold-dim), rgba(245,166,35,.35));
+  background: rgba(245,166,35,.18);
+}
+.row[data-rank="2"] .bar-track,
+.row[data-rank="3"] .bar-track,
+.row[data-rank="4"] .bar-track,
+.row[data-rank="5"] .bar-track {
+  background: var(--green-medium-dim);
+  border-color: rgba(34,197,94,.35);
 }
 .row[data-rank="2"] .bar-fill,
 .row[data-rank="3"] .bar-fill,
 .row[data-rank="4"] .bar-fill,
 .row[data-rank="5"] .bar-fill {
-  background: var(--green-medium-dim);
+  background: rgba(74,222,128,.12);
 }
 
 .bar-label {
-  font-size: .8rem;
+  font-size: .75rem;
   font-weight: 600;
   color: var(--text);
   white-space: nowrap;
@@ -156,7 +169,7 @@ body {
 
 .rate-num {
   font-family: var(--mono);
-  font-size: 1.1rem;
+  font-size: .95rem;
   font-weight: 500;
   color: var(--text);
   white-space: nowrap;
