@@ -5,7 +5,7 @@ A leaderboard of the best HYSA rates, updated daily.
 
 <https://charliesaid.github.io/baseline_monitor/>
 
-![Screenshot of the website front page](images/homepage_ss.png)
+[![Screenshot of the website front page](images/homepage_ss.png)](https://charliesaid.github.io/baseline_monitor/)
 
 ![Update Rates](https://github.com/CharlieSaid/baseline_monitor/actions/workflows/update-rates.yml/badge.svg)
 
