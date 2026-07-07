@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-06",
+  "updated": "2026-07-07",
   "rates": [
     {
       "name": "Vio Bank Online Savings",
@@ -53,7 +53,7 @@
     },
     {
       "name": "T-Bill (4-week)",
-      "rate": 3.67,
+      "rate": 3.7,
       "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
