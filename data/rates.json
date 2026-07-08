@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-07",
+  "updated": "2026-07-08",
   "rates": [
     {
       "name": "Vio Bank Online Savings",
@@ -53,7 +53,7 @@
     },
     {
       "name": "T-Bill (4-week)",
-      "rate": 3.7,
+      "rate": 3.69,
       "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
@@ -63,7 +63,7 @@
     },
     {
       "name": "VMFXX",
-      "rate": 3.48,
+      "rate": 3.47,
       "url": "https://investor.vanguard.com/investment-products/mutual-funds/profile/vmfxx#overview"
     },
     {
