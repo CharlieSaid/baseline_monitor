@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-08",
+  "updated": "2026-07-09",
   "rates": [
     {
       "name": "Vio Bank Online Savings",
@@ -97,14 +97,14 @@
       "url": "https://www.sofi.com/banking/savings-account/"
     },
     {
-      "name": "American Express HYSA",
-      "rate": 3.1,
-      "url": "https://www.americanexpress.com/en-us/banking/online-savings/high-yield-savings-account/"
-    },
-    {
       "name": "Ally HYSA",
       "rate": 3.0,
       "url": "https://www.ally.com/bank/online-savings-account/"
+    },
+    {
+      "name": "American Express HYSA",
+      "rate": 3.0,
+      "url": "https://www.americanexpress.com/en-us/banking/online-savings/high-yield-savings-account/"
     },
     {
       "name": "Capital One HYSA",
