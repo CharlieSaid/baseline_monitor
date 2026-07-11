@@ -201,5 +201,34 @@
       "forbright_hysa": 3.85,
       "etrade_hysa": 3.5
     }
+  },
+  {
+    "date": "2026-07-11",
+    "rates": {
+      "tbill_4week": 3.72,
+      "vmfxx": 3.45,
+      "sofi_hysa": 3.1,
+      "marcus_hysa": 3.4,
+      "ally_hysa": 3.0,
+      "amex_hysa": 3.0,
+      "capital_one_hysa": 3.0,
+      "synchrony_hysa": 3.3,
+      "discover_hysa": 3.0,
+      "ufb_direct_hysa": 3.26,
+      "cit_hysa": 3.75,
+      "axos_hysa": 3.75,
+      "everbank_hysa": 3.9,
+      "bask_hysa": 3.75,
+      "barclays_hysa": 3.3,
+      "citizens_access_hysa": 3.0,
+      "happen_hysa": 4.0,
+      "varo_hysa": 3.75,
+      "vio_hysa": 4.0,
+      "bread_hysa": 3.95,
+      "valley_direct_hysa": 3.4,
+      "western_alliance_hysa": 3.8,
+      "forbright_hysa": 3.85,
+      "etrade_hysa": 3.5
+    }
   }
 ]
