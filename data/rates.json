@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-15",
+  "updated": "2026-07-16",
   "rates": [
     {
       "key": "happen_hysa",
@@ -76,7 +76,7 @@
     {
       "key": "vmfxx",
       "name": "VMFXX",
-      "rate": 3.44,
+      "rate": 3.45,
       "url": "https://investor.vanguard.com/investment-products/mutual-funds/profile/vmfxx#overview"
     },
     {
