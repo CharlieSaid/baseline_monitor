@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   update:
@@ -24,8 +25,19 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
 
-      - name: Fetch current rates
-        run: python fetch_rates.py
+      - name: Fetch and validate rates
+        run: |
+          set -e
+          attempt() {
+            python fetch_rates.py
+            python validate_rates.py
+          }
+          if attempt; then
+            exit 0
+          fi
+          echo "::warning::First attempt failed; retrying once in 60s..."
+          sleep 60
+          attempt
 
       - name: Commit updated rates
         run: |
@@ -35,3 +47,37 @@ jobs:
           # Only commit if rates or history changed
           git diff --cached --quiet || git commit -m "chore: update rates $(date -u +%Y-%m-%d)"
           git push
+
+      # After one automatic retry, open (or comment on) a tracking issue.
+      # Watch the repo / enable issue notifications to get emailed by GitHub.
+      - name: Open issue on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh label create scraper-alert \
+            --description "Automated alert when rate scrape or validation fails" \
+            --color E11D48 \
+            --force 2>/dev/null || true
+
+          TITLE="Baseline Monitor: scrape/validation failed"
+          BODY="The Update Rates workflow failed after one retry (scraper error or data anomaly). Anomalous data was not committed.
+
+          Run: ${RUN_URL}
+
+          _(automated alert — close this issue once fixed)_"
+          BODY=$(printf '%b' "$BODY" | sed 's/^[[:space:]]*//')
+
+          EXISTING="$(gh issue list \
+            --label scraper-alert \
+            --state open \
+            --json number \
+            --jq '.[0].number')"
+
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "$BODY"
+            echo "Commented on existing issue #$EXISTING"
+          else
+            gh issue create --title "$TITLE" --label scraper-alert --body "$BODY"
+          fi

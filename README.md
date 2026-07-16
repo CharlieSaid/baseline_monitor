@@ -16,6 +16,8 @@ I want to compare HYSA rates, and I don't like using [NerdWallet](https://www.ne
 
 One thing that is often left out of HYSA comparisons are [T-Bill ladders](https://www.sofi.com/learn/content/guide-treasury-ladders/) and [money market funds](https://investor.vanguard.com/investment-products/money-markets).  I've included those in this comparison as well.
 
+Since I'm collecting the data daily anyways, I thought it would be cool to show the price history.  The chart can show how each account moves relative to the market, and helps visualize differences in rate. 
+
 ## Who this is for
 Ultimately, I made this for me, because I like knowing what rate my cash is earning *and* what it could be earning at a different bank.  This project is for anyone with that same inclination.
 

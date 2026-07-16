@@ -93,7 +93,12 @@ def main() -> None:
         name = source["name"]
         try:
             rate = require_rate(source["fetch"](), name)
-            results.append({"name": name, "rate": rate, "url": source["url"]})
+            results.append({
+                "key": source["key"],
+                "name": name,
+                "rate": rate,
+                "url": source["url"],
+            })
             rates_by_key[source["key"]] = rate
             print(f"  ✓ {name}: {rate}%")
         except Exception as exc:
