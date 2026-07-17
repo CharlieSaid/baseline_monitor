@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-16",
+  "updated": "2026-07-17",
   "rates": [
     {
       "key": "happen_hysa",
@@ -142,7 +142,7 @@
     {
       "key": "citizens_access_hysa",
       "name": "Citizens Access HYSA",
-      "rate": 3.0,
+      "rate": 2.8,
       "url": "https://www.secure.citizensaccess.com/Citizens/"
     }
   ]
