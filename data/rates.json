@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-20",
+  "updated": "2026-07-21",
   "rates": [
     {
       "key": "happen_hysa",
@@ -38,12 +38,6 @@
       "url": "https://www.westernalliancebancorporation.com/personal-banking/high-yield-savings-account"
     },
     {
-      "key": "tbill_4week",
-      "name": "T-Bill (4-week)",
-      "rate": 3.76,
-      "url": "https://www.treasurydirect.gov/auctions/upcoming/"
-    },
-    {
       "key": "cit_hysa",
       "name": "CIT Bank Platinum Savings",
       "rate": 3.75,
@@ -66,6 +60,12 @@
       "name": "Varo Bank Savings",
       "rate": 3.75,
       "url": "https://www.varomoney.com/savings-account/"
+    },
+    {
+      "key": "tbill_4week",
+      "name": "T-Bill (4-week)",
+      "rate": 3.73,
+      "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
       "key": "etrade_hysa",
