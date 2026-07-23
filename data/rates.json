@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-22",
+  "updated": "2026-07-23",
   "rates": [
     {
       "key": "happen_hysa",
@@ -38,6 +38,12 @@
       "url": "https://www.westernalliancebancorporation.com/personal-banking/high-yield-savings-account"
     },
     {
+      "key": "tbill_4week",
+      "name": "T-Bill (4-week)",
+      "rate": 3.75,
+      "url": "https://www.treasurydirect.gov/auctions/upcoming/"
+    },
+    {
       "key": "cit_hysa",
       "name": "CIT Bank Platinum Savings",
       "rate": 3.75,
@@ -62,12 +68,6 @@
       "url": "https://www.varomoney.com/savings-account/"
     },
     {
-      "key": "tbill_4week",
-      "name": "T-Bill (4-week)",
-      "rate": 3.72,
-      "url": "https://www.treasurydirect.gov/auctions/upcoming/"
-    },
-    {
       "key": "etrade_hysa",
       "name": "E*TRADE Premium Savings",
       "rate": 3.5,
@@ -76,7 +76,7 @@
     {
       "key": "vmfxx",
       "name": "VMFXX",
-      "rate": 3.47,
+      "rate": 3.46,
       "url": "https://investor.vanguard.com/investment-products/mutual-funds/profile/vmfxx#overview"
     },
     {
