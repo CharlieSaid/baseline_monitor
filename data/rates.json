@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-27",
+  "updated": "2026-07-28",
   "rates": [
     {
       "key": "happen_hysa",
@@ -34,7 +34,7 @@
     {
       "key": "tbill_4week",
       "name": "T-Bill (4-week)",
-      "rate": 3.82,
+      "rate": 3.8,
       "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
@@ -76,7 +76,7 @@
     {
       "key": "vmfxx",
       "name": "VMFXX",
-      "rate": 3.48,
+      "rate": 3.49,
       "url": "https://investor.vanguard.com/investment-products/mutual-funds/profile/vmfxx#overview"
     },
     {
