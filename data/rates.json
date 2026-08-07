@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-06",
+  "updated": "2026-08-07",
   "rates": [
     {
       "key": "happen_hysa",
@@ -10,7 +10,7 @@
     {
       "key": "vio_hysa",
       "name": "Vio Bank Online Savings",
-      "rate": 4.0,
+      "rate": 3.99,
       "url": "https://www.viobank.com/online-savings-account"
     },
     {
@@ -40,7 +40,7 @@
     {
       "key": "tbill_4week",
       "name": "T-Bill (4-week)",
-      "rate": 3.78,
+      "rate": 3.77,
       "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
