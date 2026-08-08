@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-07",
+  "updated": "2026-08-08",
   "rates": [
     {
       "key": "happen_hysa",
@@ -32,16 +32,16 @@
       "url": "https://www.forbrightbank.com/stories/resources/growth-savings-product-guide/"
     },
     {
+      "key": "tbill_4week",
+      "name": "T-Bill (4-week)",
+      "rate": 3.8,
+      "url": "https://www.treasurydirect.gov/auctions/upcoming/"
+    },
+    {
       "key": "western_alliance_hysa",
       "name": "Western Alliance HYSA",
       "rate": 3.8,
       "url": "https://www.westernalliancebancorporation.com/personal-banking/high-yield-savings-account"
-    },
-    {
-      "key": "tbill_4week",
-      "name": "T-Bill (4-week)",
-      "rate": 3.77,
-      "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
       "key": "cit_hysa",
@@ -70,7 +70,7 @@
     {
       "key": "vmfxx",
       "name": "VMFXX",
-      "rate": 3.51,
+      "rate": 3.5,
       "url": "https://investor.vanguard.com/investment-products/mutual-funds/profile/vmfxx#overview"
     },
     {
