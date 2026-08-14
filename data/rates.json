@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-13",
+  "updated": "2026-08-14",
   "rates": [
     {
       "key": "happen_hysa",
@@ -40,7 +40,7 @@
     {
       "key": "tbill_4week",
       "name": "T-Bill (4-week)",
-      "rate": 3.79,
+      "rate": 3.78,
       "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
