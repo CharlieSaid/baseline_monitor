@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-18",
+  "updated": "2026-08-19",
   "rates": [
     {
       "key": "happen_hysa",
@@ -86,12 +86,6 @@
       "url": "https://www.marcus.com/us/en/savings/high-yield-savings"
     },
     {
-      "key": "valley_direct_hysa",
-      "name": "Valley Direct HYSA",
-      "rate": 3.4,
-      "url": "https://www.valleydirect.com/Savings"
-    },
-    {
       "key": "synchrony_hysa",
       "name": "Synchrony HYSA",
       "rate": 3.3,
@@ -102,6 +96,12 @@
       "name": "Barclays HYSA",
       "rate": 3.3,
       "url": "https://banking.barclaysus.com/online-savings"
+    },
+    {
+      "key": "valley_direct_hysa",
+      "name": "Valley Direct HYSA",
+      "rate": 3.3,
+      "url": "https://www.valleydirect.com/Savings"
     },
     {
       "key": "ufb_direct_hysa",
