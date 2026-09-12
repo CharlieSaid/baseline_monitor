@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-11",
+  "updated": "2026-09-12",
   "rates": [
     {
       "key": "happen_hysa",
@@ -20,6 +20,12 @@
       "url": "https://breadsavings.com/"
     },
     {
+      "key": "tbill_4week",
+      "name": "T-Bill (4-week)",
+      "rate": 3.91,
+      "url": "https://www.treasurydirect.gov/auctions/upcoming/"
+    },
+    {
       "key": "everbank_hysa",
       "name": "EverBank Performance Savings",
       "rate": 3.9,
@@ -30,12 +36,6 @@
       "name": "Forbright Growth Savings",
       "rate": 3.85,
       "url": "https://www.forbrightbank.com/stories/resources/growth-savings-product-guide/"
-    },
-    {
-      "key": "tbill_4week",
-      "name": "T-Bill (4-week)",
-      "rate": 3.81,
-      "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
       "key": "western_alliance_hysa",
