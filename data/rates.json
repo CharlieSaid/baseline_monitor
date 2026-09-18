@@ -1,11 +1,17 @@
 {
-  "updated": "2026-09-17",
+  "updated": "2026-09-18",
   "rates": [
     {
       "key": "happen_hysa",
       "name": "Happen LevelUp Savings",
       "rate": 4.0,
       "url": "https://www.happen.com/personal-banking"
+    },
+    {
+      "key": "tbill_4week",
+      "name": "T-Bill (4-week)",
+      "rate": 3.96,
+      "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
       "key": "vio_hysa",
@@ -18,12 +24,6 @@
       "name": "Bread Savings HYSA",
       "rate": 3.95,
       "url": "https://breadsavings.com/"
-    },
-    {
-      "key": "tbill_4week",
-      "name": "T-Bill (4-week)",
-      "rate": 3.93,
-      "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
       "key": "everbank_hysa",
@@ -70,20 +70,20 @@
     {
       "key": "vmfxx",
       "name": "VMFXX",
-      "rate": 3.52,
+      "rate": 3.53,
       "url": "https://investor.vanguard.com/investment-products/mutual-funds/profile/vmfxx#overview"
+    },
+    {
+      "key": "marcus_hysa",
+      "name": "Marcus HYSA",
+      "rate": 3.5,
+      "url": "https://www.marcus.com/us/en/savings/high-yield-savings"
     },
     {
       "key": "etrade_hysa",
       "name": "E*TRADE Premium Savings",
       "rate": 3.5,
       "url": "https://us.etrade.com/bank/premium-savings-account"
-    },
-    {
-      "key": "marcus_hysa",
-      "name": "Marcus HYSA",
-      "rate": 3.4,
-      "url": "https://www.marcus.com/us/en/savings/high-yield-savings"
     },
     {
       "key": "synchrony_hysa",
