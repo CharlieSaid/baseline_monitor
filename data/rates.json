@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-24",
+  "updated": "2026-09-25",
   "rates": [
     {
       "key": "happen_hysa",
@@ -14,16 +14,16 @@
       "url": "https://www.viobank.com/online-savings-account"
     },
     {
-      "key": "tbill_4week",
-      "name": "T-Bill (4-week)",
-      "rate": 3.97,
-      "url": "https://www.treasurydirect.gov/auctions/upcoming/"
-    },
-    {
       "key": "bread_hysa",
       "name": "Bread Savings HYSA",
-      "rate": 3.95,
+      "rate": 4.0,
       "url": "https://breadsavings.com/"
+    },
+    {
+      "key": "tbill_4week",
+      "name": "T-Bill (4-week)",
+      "rate": 3.99,
+      "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
       "key": "everbank_hysa",
@@ -76,7 +76,7 @@
     {
       "key": "vmfxx",
       "name": "VMFXX",
-      "rate": 3.63,
+      "rate": 3.65,
       "url": "https://investor.vanguard.com/investment-products/mutual-funds/profile/vmfxx#overview"
     },
     {
@@ -116,27 +116,27 @@
       "url": "https://banking.barclaysus.com/online-savings"
     },
     {
+      "key": "ally_hysa",
+      "name": "Ally HYSA",
+      "rate": 3.1,
+      "url": "https://www.ally.com/bank/online-savings-account/"
+    },
+    {
       "key": "amex_hysa",
       "name": "American Express HYSA",
       "rate": 3.1,
       "url": "https://www.americanexpress.com/en-us/banking/online-savings/high-yield-savings-account/"
     },
     {
-      "key": "ally_hysa",
-      "name": "Ally HYSA",
-      "rate": 3.0,
-      "url": "https://www.ally.com/bank/online-savings-account/"
-    },
-    {
       "key": "capital_one_hysa",
       "name": "Capital One HYSA",
-      "rate": 3.0,
+      "rate": 3.1,
       "url": "https://www.capitalone.com/bank/savings-accounts/online-performance-savings-account/"
     },
     {
       "key": "discover_hysa",
       "name": "Discover HYSA",
-      "rate": 3.0,
+      "rate": 3.1,
       "url": "https://www.discover.com/online-banking/savings-account/"
     },
     {
