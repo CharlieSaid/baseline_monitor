@@ -1,11 +1,17 @@
 {
-  "updated": "2026-09-25",
+  "updated": "2026-09-26",
   "rates": [
     {
       "key": "happen_hysa",
       "name": "Happen LevelUp Savings",
       "rate": 4.2,
       "url": "https://www.happen.com/personal-banking"
+    },
+    {
+      "key": "tbill_4week",
+      "name": "T-Bill (4-week)",
+      "rate": 4.01,
+      "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
       "key": "vio_hysa",
@@ -18,12 +24,6 @@
       "name": "Bread Savings HYSA",
       "rate": 4.0,
       "url": "https://breadsavings.com/"
-    },
-    {
-      "key": "tbill_4week",
-      "name": "T-Bill (4-week)",
-      "rate": 3.99,
-      "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
       "key": "everbank_hysa",
@@ -76,7 +76,7 @@
     {
       "key": "vmfxx",
       "name": "VMFXX",
-      "rate": 3.65,
+      "rate": 3.66,
       "url": "https://investor.vanguard.com/investment-products/mutual-funds/profile/vmfxx#overview"
     },
     {
