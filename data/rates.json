@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-28",
+  "updated": "2026-09-29",
   "rates": [
     {
       "key": "happen_hysa",
@@ -10,7 +10,7 @@
     {
       "key": "tbill_4week",
       "name": "T-Bill (4-week)",
-      "rate": 4.01,
+      "rate": 4.04,
       "url": "https://www.treasurydirect.gov/auctions/upcoming/"
     },
     {
@@ -76,8 +76,14 @@
     {
       "key": "vmfxx",
       "name": "VMFXX",
-      "rate": 3.66,
+      "rate": 3.67,
       "url": "https://investor.vanguard.com/investment-products/mutual-funds/profile/vmfxx#overview"
+    },
+    {
+      "key": "synchrony_hysa",
+      "name": "Synchrony HYSA",
+      "rate": 3.55,
+      "url": "https://www.synchronybank.com/banking/high-yield-savings/"
     },
     {
       "key": "marcus_hysa",
@@ -90,12 +96,6 @@
       "name": "SoFi HYSA",
       "rate": 3.3,
       "url": "https://www.sofi.com/banking/savings-account/"
-    },
-    {
-      "key": "synchrony_hysa",
-      "name": "Synchrony HYSA",
-      "rate": 3.3,
-      "url": "https://www.synchronybank.com/banking/high-yield-savings/"
     },
     {
       "key": "valley_direct_hysa",
