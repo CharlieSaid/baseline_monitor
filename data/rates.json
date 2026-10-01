@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-30",
+  "updated": "2026-10-01",
   "rates": [
     {
       "key": "happen_hysa",
@@ -12,6 +12,12 @@
       "name": "T-Bill (4-week)",
       "rate": 4.04,
       "url": "https://www.treasurydirect.gov/auctions/upcoming/"
+    },
+    {
+      "key": "axos_hysa",
+      "name": "Axos Summit Savings",
+      "rate": 4.01,
+      "url": "https://www.axosbank.com/personal/bank/savings-accounts/summit-savings"
     },
     {
       "key": "vio_hysa",
@@ -54,12 +60,6 @@
       "name": "CIT Bank Platinum Savings",
       "rate": 3.75,
       "url": "https://www.cit.com/cit-bank/platinum-savings"
-    },
-    {
-      "key": "axos_hysa",
-      "name": "Axos Summit Savings",
-      "rate": 3.75,
-      "url": "https://www.axosbank.com/personal/bank/savings-accounts/summit-savings"
     },
     {
       "key": "varo_hysa",
